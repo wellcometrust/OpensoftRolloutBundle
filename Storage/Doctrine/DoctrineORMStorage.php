@@ -2,7 +2,8 @@
 
 namespace Opensoft\RolloutBundle\Storage\Doctrine;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Opensoft\Rollout\Storage\StorageInterface;
 use Opensoft\RolloutBundle\Entity\Feature;
 
@@ -11,14 +12,13 @@ use Opensoft\RolloutBundle\Entity\Feature;
  */
 class DoctrineORMStorage implements StorageInterface
 {
-
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var EntityRepository
      */
     protected $repository;
 
@@ -28,10 +28,10 @@ class DoctrineORMStorage implements StorageInterface
     protected $class;
 
     /**
-     * @param EntityManager $em
-     * @param string        $class
+     * @param EntityManagerInterface $em
+     * @param string $class
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManagerInterface $em, $class)
     {
         $this->em = $em;
         $this->repository = $em->getRepository($class);
@@ -39,7 +39,8 @@ class DoctrineORMStorage implements StorageInterface
     }
 
     /**
-     * @param  string     $key
+     * @param string key
+     *
      * @return mixed|null Null if the value is not found
      */
     public function get($key)
@@ -55,7 +56,7 @@ class DoctrineORMStorage implements StorageInterface
 
     /**
      * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function set($key, $value)
     {
